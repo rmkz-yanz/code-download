@@ -1,0 +1,254 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+marquee, a, font {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+marquee {
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#content {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  text-align: center;
+  padding: 0 15px;
+  color: white;
+  z-index: 1; /* Ensure content is above the video */
+}
+
+#bgv {
+  position: absolute;
+  transition: background 0.5s ease;
+  background: rgba(0, 0, 0, 1);
+  width: 100%;
+  height: 100%;
+}
+
+.docs {
+  color: white;
+}
+
+#set-btn {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+#open, .close {
+  color: white;
+  font-size: 2rem;
+  background: none;
+  border: none;
+}
+
+#open {
+  position: absolute;
+  margin-top: 3px;
+  margin-right: 3px;
+}
+
+#menu {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) translateX(-100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 3; /* Ensure menu is above other elements */
+  opacity: 0;
+}
+
+#menu.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+#menu.hide {
+  opacity: 0;
+  transform: translateY(-50%) translateX(-100%);
+}
+
+.ilang {
+  color: #fff;
+}
+
+label {
+  position: relative;
+  bottom: 8px;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 800px;
+  background: none;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2; /* Ensure search container is above the video */
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.search-box {
+  flex: 1;
+  width: 100%;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-box:focus {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-cari {
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 20px;
+  color: rgb(125, 125, 125);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+.button-cari:hover {
+  background: #e0e0e0;
+}
+
+.cls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cls label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.cls input[type="radio"] {
+  display: none;
+}
+
+.cls input[type="radio"] + img {
+  border: 2px solid transparent;
+  transition: border 0.3s ease;
+}
+
+.cls input[type="radio"]:checked + img {
+  border: 2px solid #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.cls img {
+  width: 100px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.cls img:hover {
+  transform: scale(1.1);
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.upload-container h1 {
+  margin-bottom: 20px;
+}
+
+.button-upload {
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  min-width: 80px;
+  white-space: nowrap;
+  margin-top: 10px;
+}
+
+.button-upload:hover {
+  background: #e0e0e0;
+  color: #000;
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambah Kode</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+        url('https://i.ibb.co.com/R49RjmY3/mikaela.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: black;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow:
+        0 0 5px rgba(0, 255, 255, 0.5),
+        0 0 10px rgba(0, 255, 255, 0.4),
+        0 0 15px rgba(0, 255, 255, 0.3);
+      width: 100%;
+      max-width: 500px;
+      backdrop-filter: blur(2px);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #eee;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    button {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    button:hover {
+      background-color: #00cccc;
+      box-shadow: 0 0 20px #00ffff;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Tambah Kode Baru</h1>
+    <form id="addForm">
+      <div class="form-group">
+        <label for="code">Kode:</label>
+        <input type="text" id="code" name="code" required placeholder="Masukkan kode">
+      </div>
+      
+      <div class="form-group">
+        <label for="name">Nama:</label>
+        <input type="text" id="name" name="name" required placeholder="Masukkan nama">
+      </div>
+      
+      <div class="form-group">
+        <label for="fileUpload">Upload File (MP3 / ZIP):</label>
+        <input type="file" id="fileUpload" accept=".mp3,.zip">
+      </div>
+      
+      <div class="form-group">
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" required readonly placeholder="URL akan muncul setelah upload">
+      </div>
+      
+      <button type="submit">Tambah</button>
+    </form>
+    <a href="/data251.html" class="back-link">Lihat Semua Kode</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('addForm');
+    const fileUpload = document.getElementById('fileUpload');
+    const urlInput = document.getElementById('url');
+
+    fileUpload.addEventListener('change', async () => {
+      const file = fileUpload.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          urlInput.value = `/file/${result.filename}`;
+          Swal.fire({
+            icon: 'success',
+            title: 'Upload Berhasil',
+            text: 'File berhasil diunggah.',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        } else {
+          throw new Error(result.message || 'Gagal upload');
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal Upload',
+          text: err.message
+        });
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new URLSearchParams(new FormData(form)).toString();
+
+      const res = await fetch('/add-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Kode berhasil ditambahkan.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        form.reset();
+        urlInput.value = '';
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: result.message || 'Terjadi kesalahan.'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DJ MNR | NOVIN FVNKY</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css?family=Audiowide&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <style>
+    body::before {
+      content: "\00A9  code by nopian";
+      color: white;
+      opacity: 0.5;
+      font-size: 5px;
+      position: absolute;
+      bottom: 25px;
+      left: calc(50vw - 22px);
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container" id="pidio">
+    <video id="myVideo" loop>
+      <source src="vid/mikaela.mp4" type="video/mp4" />
+    </video>
+
+    <div id="content">
+      <form id="codeForm">
+        <div class="search-container">
+          <div class="search-row">
+            <input name="code" type="text" class="search-box" placeholder="masukan code..." required autocomplete="off" />
+            <button class="button-cari" type="submit">Cari</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="bgv">
+      <div class="set-btn">
+        <button id="open" onclick="toggleMenu('open')">
+          <ion-icon class="ilang" name="reorder-three-outline"></ion-icon>
+        </button>
+      </div>
+      <div id="menu">
+        <div class="cls">
+          <!-- Pilihan video -->
+          <label><input type="radio" name="video" value="vid/mikaela.mp4" data-time="2000" /><img src="thumbs/mikaela.jpg" alt="Video 6" /></label>
+          <label><input type="radio" name="video" value="vid/vid1.mp4" data-time="2000" /><img src="thumbs/vid1.jpg" alt="Video 1" /></label>
+          <label><input type="radio" name="video" value="vid/vid5.mp4" data-time="2000" /><img src="thumbs/vid5.jpg" alt="Video 5" /></label>
+          <button onclick="toggleMenu('close')" class="close">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

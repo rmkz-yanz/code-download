@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Kode</title>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+        url('https://i.ibb.co.com/R49RjmY3/mikaela.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: white;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow:
+        0 0 5px rgba(0, 255, 255, 0.5),
+        0 0 10px rgba(0, 255, 255, 0.4),
+        0 0 15px rgba(0, 255, 255, 0.3);
+      backdrop-filter: blur(2px);
+      margin-bottom: 20px;
+    }
+
+    .search-container {
+      margin-bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    #searchInput {
+      padding: 12px;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    #searchInput::placeholder {
+      color: #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 400px;
+    }
+
+    thead {
+      background-color: #00ffff;
+      color: #000;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    tbody tr:hover {
+      background-color: rgba(0, 255, 255, 0.1);
+    }
+
+    a {
+      color: #00ffff;
+      text-decoration: none;
+      text-shadow: 0 0 5px #00ffff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .delete-btn {
+      background-color: #ff3b3b;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      box-shadow: 0 0 5px #ff3b3b;
+    }
+
+    .delete-btn:hover {
+      background-color: #e22a2a;
+      box-shadow: 0 0 10px #ff3b3b;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      text-shadow: 0 0 5px #fff;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <h1>Daftar Semua Kode</h1>
+    
+    <div class="table-container">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Cari kode atau nama...">
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama</th>
+            <th>URL</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="codeTableBody">
+          <!-- Data dari server akan dimasukkan di sini -->
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/" class="back-link">Kembali ke Beranda</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function loadCodes() {
+      fetch('/list-codes')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('codeTableBody');
+          tableBody.innerHTML = '';
+
+          for (const key in data) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${key}</td>
+              <td>${data[key].name}</td>
+              <td><a href="${data[key].url}" target="_blank">${data[key].url}</a></td>
+              <td><button class="delete-btn" onclick="deleteCode('${key}')">Delete</button></td>
+            `;
+            tableBody.appendChild(row);
+          }
+        })
+        .catch(error => {
+          console.error('Error loading data:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Gagal memuat data',
+            background: 'rgba(30, 30, 47, 0.9)',
+            color: 'white'
+          });
+        });
+    }
+
+    function deleteCode(code) {
+      Swal.fire({
+        title: `Hapus kode "${code}"?`,
+        text: "Tindakan ini tidak dapat dibatalkan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ff3b3b",
+        cancelButtonColor: "#00ffff",
+        confirmButtonText: "Ya, hapus",
+        cancelButtonText: "Batal",
+        background: 'rgba(30, 30, 47, 0.9)',
+        color: 'white'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch(`/delete-code/${encodeURIComponent(code)}`, {
+            method: 'DELETE'
+          })
+          .then(res => res.json())
+          .then(result => {
+            if (result.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Kode berhasil dihapus',
+                timer: 1500,
+                showConfirmButton: false,
+                background: 'rgba(30, 30, 47, 0.9)',
+                color: 'white'
+              });
+              loadCodes();
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: result.message || 'Gagal menghapus kode.',
+                background: 'rgba(30, 30, 47, 0.9)',
+                color: 'white'
+              });
+            }
+          })
+          .catch(err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menghapus kode.',
+              background: 'rgba(30, 30, 47, 0.9)',
+              color: 'white'
+            });
+            console.error(err);
+          });
+        }
+      });
+    }
+    
+    function filterCodes() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('#codeTableBody tr');
+
+      rows.forEach(row => {
+        const code = row.children[0].textContent.toLowerCase();
+        const name = row.children[1].textContent.toLowerCase();
+        row.style.display = (code.includes(query) || name.includes(query)) ? '' : 'none';
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadCodes);
+    document.getElementById('searchInput').addEventListener('input', filterCodes);
+  </script>
+
+</body>
+</html>
