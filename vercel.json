@@ -2,6 +2,6 @@
   "rewrites": [
     { "source": "/", "destination": "/public/index.html" },
     { "source": "/add", "destination": "/public/add251.html" },
-    { "source": "/data251.html", "destination": "/public/data251.html" }
+    { "source": "/data251", "destination": "/public/data251.html" } // Perbaikan: Menghapus ".html" dari source agar konsisten
   ]
 }

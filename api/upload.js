@@ -14,6 +14,7 @@ const upload = multer({
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
+    console.error('Upload error:', error);
     res.status(501).json({ error: `Something went wrong: ${error.message}` });
   },
   onNoMatch(req, res) {
@@ -24,10 +25,15 @@ const apiRoute = nextConnect({
 apiRoute.use(upload.single('file'));
 
 apiRoute.post((req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+    res.status(200).json({ success: true, filename: req.file.filename });
+  } catch (err) {
+    console.error('Error handling upload:', err);
+    res.status(500).json({ error: 'Server error' });
   }
-  res.status(200).json({ success: true, filename: req.file.filename });
 });
 
 export default apiRoute;

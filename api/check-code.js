@@ -2,9 +2,13 @@ import { readCodes } from './utils';
 
 export default function handler(req, res) {
   if (req.method === 'POST') {
-    const code = req.body.code.trim();
-
     try {
+      const code = req.body?.code?.trim();
+
+      if (!code) {
+        return res.status(400).json({ error: 'Code is required' });
+      }
+
       const codes = readCodes();
       const codeData = codes[code];
 

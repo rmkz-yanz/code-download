@@ -2,9 +2,13 @@ import { readCodes, writeCodes } from './utils';
 
 export default function handler(req, res) {
   if (req.method === 'DELETE') {
-    const { code } = req.query;
-
     try {
+      const { code } = req.query;
+
+      if (!code) {
+        return res.status(400).json({ message: 'Code is required' });
+      }
+
       const codes = readCodes();
 
       if (!codes[code]) {
